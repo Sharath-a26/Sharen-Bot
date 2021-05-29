@@ -1,6 +1,7 @@
 from telegram import *
 from telegram.ext import *
 import matplotlib.pyplot as plt
+import numpy
 def sub(update,context):
     update.message.reply_text('Type something')
     first_name = update.message.from_user

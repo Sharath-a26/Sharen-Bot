@@ -18,8 +18,8 @@ def talk(update,context):
         update.message.reply_text("Can i help u out with something?")
     elif text == "No need":
         update.message.reply_text("Thats ok")
-    elif text[0] != "/" and text[0]:
-        update.message.reply_text(text)
+    #elif text[0] != "/" and text[0]:
+        #update.message.reply_text(text)
 def send(update,context):
     text = update.message.text
     if text == "whatsapp":
@@ -32,7 +32,7 @@ def send(update,context):
         a = text2.split()
         update.message.reply_text(a)
 def schedule(update,context):
-    def change_date_format(b):                                 
+    def change_date_format(b):
         return re.sub(r'(\d{4})-(\d{1,2})-(\d{1,2})', '\\3-\\2-\\1', b)
     b = datetime.date.today()
     b = str(b)
@@ -40,9 +40,18 @@ def schedule(update,context):
     day_name = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     day = datetime.datetime.strptime(a, '%d-%m-%Y').weekday()
     if day_name[day] == "Sunday":
-        update.message.reply_text(f"Its {day_name[day]} so just netflix and chill!")  #schedule for sunday.
-    elif day_name == "Monday":
-        update.message.reply_text(f"Its {}")
+        update.message.reply_text(f"Its {day_name[day]} so just netflix and chill!")
+    #elif day_name == "Monday":
+        #update.message.reply_text(f"Its {}")
+
+def auto_mate(update,context):
+    text = update.message.text
+    a = text.split()
+    update.message.reply_text(f"{a[0]}")
+def whatsapp(update,context):
+    update.message.reply_text(f"Hey {update.message.from_user.first_name} welcome to the feature of automating whatsapp.")
+    update.message.reply_text("Please enter the whatsapp number you want to send message, the message that you wanna send,"
+            " the time at which your message has to be sent in 24 hour format")
 
 
 
@@ -54,24 +63,30 @@ dispatcher = updater.dispatcher
 def welcome(update:Update,context:CallbackContext):
     bot.send_message(chat_id=update.effective_chat.id,text=f"{sub()}",)
 start = CommandHandler('start',start)
-
 dispatcher.add_handler(start)
 
-updater.start_polling()
+
 def test_function1(update:Update,context:CallbackContext):
 
     bot.send_message(chat_id=update.effective_chat.id,text=f"",)
 start1 = CommandHandler('about',about)                #handles commands typed by the user --> here it displays bot info.
 dispatcher.add_handler(start1)
-updater.start_polling()
 
-day_schedule = CommandHandler('schedule',schedule)           #command to print the schedule for the day
+
+day_schedule = CommandHandler('schedule',schedule)
 dispatcher.add_handler(day_schedule)
-updater.start_polling()
+
+whatsapp_auto = CommandHandler('whatsapp',whatsapp)
+automate = MessageHandler(Filters.text,auto_mate)
+dispatcher.add_handler(whatsapp_auto)
+dispatcher.add_handler(automate)
+
 def test_function2(update:Update,context:CallbackContext):
 
     bot.send_message(chat_id=update.effective_chat.id,text=f"",)
 start2 = MessageHandler(Filters.text,talk)                         #for handling user text
 dispatcher.add_handler(start2)
 updater.start_polling()
+
+
 
